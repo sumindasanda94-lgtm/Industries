@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="si">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111827">
+<title>සදුපමා ඉන්ඩස්ට්‍රීස් - Rental Quotation</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#eef2f7;color:#172033;font-family:Arial,"Noto Sans Sinhala",sans-serif}.wrap{max-width:1100px;margin:auto;padding:12px}.head{background:#111827;color:#fff;border-radius:16px;padding:18px;box-shadow:0 6px 20px #0002}.brand{font-size:25px;font-weight:800}.sub{opacity:.85;font-size:13px;margin-top:4px}.actions{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:14px}.btn{min-height:46px;border:0;border-radius:10px;padding:10px 12px;font-weight:800;cursor:pointer}.blue{background:#2563eb;color:#fff}.green{background:#15803d;color:#fff}.dark{background:#334155;color:#fff}.red{background:#dc2626;color:#fff}.white{background:#fff;color:#111827}.panel{background:#fff;border-radius:15px;padding:14px;margin-top:13px;box-shadow:0 3px 15px #0000000a}.panel h2{font-size:17px;margin:0 0 12px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}label{font-size:12px;font-weight:700;color:#64748b;display:block;margin-bottom:5px}input{width:100%;border:1px solid #d5dce6;border-radius:9px;padding:10px;font:inherit;outline:0}input:focus{border-color:#2563eb;box-shadow:0 0 0 3px #2563eb1c}.tablebox{overflow:auto}table{border-collapse:collapse;width:100%;min-width:720px}th,td{padding:8px 6px;border-bottom:1px solid #e2e8f0}th{font-size:12px;background:#f8fafc;text-align:left}td input{padding:8px}.right{text-align:right}.delete{border:0;border-radius:8px;padding:8px 11px;background:#fee2e2;color:#b91c1c;font-weight:900;cursor:pointer}.add{margin-top:10px}.totals{max-width:420px;margin:14px 0 0 auto}.trow{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #e2e8f0}.grand{font-size:19px;font-weight:900;border-bottom:0}.status{background:#eff6ff;color:#1d4ed8;border-radius:9px;padding:9px 10px;font-size:12px;margin-top:10px}.hint{font-size:12px;color:#64748b;line-height:1.6;margin:8px 0 0}.preview{border:1px dashed #cbd5e1;border-radius:10px;padding:10px;background:#f8fafc}.pdf{background:#fff;color:#111827;padding:20px;width:100%;font-family:Arial,"Noto Sans Sinhala",sans-serif}.pdfhead{text-align:center;border-bottom:2px solid #111827;padding-bottom:12px}.pdfbrand{font-size:25px;font-weight:900}.pdftitle{font-size:16px;font-weight:800;margin-top:3px}.pdfdate{text-align:right;font-size:11px;margin:10px 0}.pdftable{width:100%;min-width:0;border-collapse:collapse;font-size:11px}.pdftable th,.pdftable td{border:1px solid #9ca3af;padding:6px 5px}.pdftable th{background:#f1f5f9}.pdftotal{margin-left:auto;width:280px;margin-top:10px;font-size:11px}.pdftotal div{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #cbd5e1}.pdftotal .big{font-size:15px;font-weight:900}.pdffoot{text-align:center;font-size:10px;color:#64748b;margin-top:18px}.hidden{display:none!important}@media(max-width:720px){.wrap{padding:8px}.actions{grid-template-columns:repeat(2,1fr)}.actions .btn:last-child{grid-column:1/-1}.grid{grid-template-columns:1fr}.brand{font-size:21px}.panel{padding:11px}.btn{font-size:12px}}@media print{body{background:#fff}.wrap>*:not(#pdfPrint){display:none!important}#pdfPrint{display:block!important}.pdf{padding:0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="head">
+  <div class="brand">සදුපමා ඉන්ඩස්ට්‍රීස්</div>
+  <div class="sub">RENTAL QUOTATION • දිනකට අයවන කුලී ගාස්තු</div>
+  <div class="actions">
+    <button class="btn blue" id="add">＋ භාණ්ඩ එකතු</button>
+    <button class="btn green" id="pdf">PDF සකස් කරන්න</button>
+    <button class="btn green" id="share">WhatsApp PDF</button>
+    <button class="btn dark" id="save">Save</button>
+    <button class="btn white" id="new">අලුත් එකක්</button>
+  </div>
+</header>
+
+<section class="panel">
+  <h2>Quotation</h2>
+  <div class="grid">
+    <div><label>Quotation අංකය (විකල්ප)</label><input id="qno" placeholder="උදා: Q-001"></div>
+    <div><label>දිනය</label><input id="date" type="date"></div>
+  </div>
+  <div class="status" id="status">භාණ්ඩයේ නම සහ දිනකට මිල ඔබටම ටයිප් කර වෙනස් කළ හැක.</div>
+</section>
+
+<section class="panel">
+  <h2>භාණ්ඩ සහ දිනකට අයවන මුදල</h2>
+  <div class="tablebox">
+  <table>
+    <thead><tr><th>භාණ්ඩයේ නම</th><th>දිනකට මිල (රු.)</th><th>ප්‍රමාණය</th><th>දින ගණන</th><th class="right">මුළු මුදල (රු.)</th><th></th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+  </div>
+  <button class="btn blue add" id="add2">＋ තවත් භාණ්ඩයක්</button>
+  <p class="hint">ගණනය: <b>දිනකට මිල × ප්‍රමාණය × දින ගණන = මුළු මුදල</b>. Quotation එකේ භාණ්ඩ නම, මිල, ප්‍රමාණය සහ දින ගණන ඕනෑම වේලාවක වෙනස් කළ හැක.</p>
+  <div class="totals">
+    <div class="trow"><span>දිනකට මුළු ගාස්තුව</span><b id="daily">රු. 0.00</b></div>
+    <div class="trow grand"><span>මුළු එකතුව</span><b id="grand">රු. 0.00</b></div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>PDF Preview</h2>
+  <div class="preview" id="preview"></div>
+</section>
+
+<div id="pdfPrint" class="hidden"></div>
+</div>
+
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+const fmt=n=>'රු. '+Number(n||0).toLocaleString('en-LK',{minimumFractionDigits:2,maximumFractionDigits:2});
+const today=new Date().toISOString().slice(0,10);$('date').value=today;
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function addRow(d={}){
+ const tr=document.createElement('tr');
+ tr.innerHTML=`<td><input class="name" placeholder="භාණ්ඩයේ නම" value="${esc(d.name||'')}" /></td><td><input class="rate" type="number" min="0" step="0.01" value="${Number(d.rate||0)}" /></td><td><input class="qty" type="number" min="0" step="1" value="${Number(d.qty||1)}" /></td><td><input class="days" type="number" min="0" step="1" value="${Number(d.days||1)}" /></td><td class="right lineTotal">රු. 0.00</td><td><button class="delete" type="button">×</button></td>`;
+ $('rows').appendChild(tr);
+ tr.querySelectorAll('input').forEach(x=>x.addEventListener('input',recalc));
+ tr.querySelector('.delete').addEventListener('click',()=>{tr.remove();recalc();});
+ recalc();
+}
+function getRows(){return [...$('rows').querySelectorAll('tr')].map(tr=>({name:tr.querySelector('.name').value.trim(),rate:Number(tr.querySelector('.rate').value)||0,qty:Number(tr.querySelector('.qty').value)||0,days:Number(tr.querySelector('.days').value)||0}));}
+function totals(){let daily=0,grand=0;getRows().forEach(x=>{daily+=x.rate*x.qty;grand+=x.rate*x.qty*x.days});return {daily,grand};}
+function makePdfMarkup(){
+ const r=getRows(),t=totals();
+ const q=$('qno').value.trim(),d=$('date').value;
+ return `<div class="pdf"><div class="pdfhead"><div class="pdfbrand">සදුපමා ඉන්ඩස්ට්‍රීස්</div><div class="pdftitle">RENTAL QUOTATION / කුලී මිල ගණන්</div></div><div class="pdfdate">${q?'Quotation No: '+esc(q)+' &nbsp;&nbsp;':''}${d?'Date: '+esc(d):''}</div><table class="pdftable"><thead><tr><th>#</th><th>භාණ්ඩයේ නම</th><th>දිනකට මිල (රු.)</th><th>ප්‍රමාණය</th><th>දින</th><th>මුළු මුදල (රු.)</th></tr></thead><tbody>${r.length?r.map((x,i)=>`<tr><td>${i+1}</td><td>${esc(x.name||'—')}</td><td>${x.rate.toLocaleString('en-LK',{minimumFractionDigits:2})}</td><td>${x.qty}</td><td>${x.days}</td><td>${(x.rate*x.qty*x.days).toLocaleString('en-LK',{minimumFractionDigits:2})}</td></tr>`).join(''):'<tr><td colspan="6" style="text-align:center">භාණ්ඩ ඇතුළත් කර නැත</td></tr>'}</tbody></table><div class="pdftotal"><div><span>දිනකට මුළු ගාස්තුව</span><b>${fmt(t.daily)}</b></div><div><span>මුළු එකතුව</span><b class="big">${fmt(t.grand)}</b></div></div><div class="pdffoot">සදුපමා ඉන්ඩස්ට්‍රීස්</div></div>`;
+}
+function recalc(){
+ $('rows').querySelectorAll('tr').forEach(tr=>{const rate=Number(tr.querySelector('.rate').value)||0,qty=Number(tr.querySelector('.qty').value)||0,days=Number(tr.querySelector('.days').value)||0;tr.querySelector('.lineTotal').textContent=fmt(rate*qty*days)});
+ const t=totals();$('daily').textContent=fmt(t.daily);$('grand').textContent=fmt(t.grand);$('preview').innerHTML=makePdfMarkup();
+}
+function data(){return {qno:$('qno').value,date:$('date').value,rows:getRows()};}
+function loadData(d){$('qno').value=d.qno||'';$('date').value=d.date||today;$('rows').innerHTML='';(d.rows||[]).forEach(addRow);if(!d.rows?.length)addRow();recalc();}
+async function pdfBlob(){
+ if(typeof html2pdf==='undefined')throw new Error('PDF library not loaded');
+ const holder=document.createElement('div');holder.innerHTML=makePdfMarkup();const el=holder.firstElementChild;el.style.width='190mm';el.style.margin='0 auto';el.style.background='#fff';document.body.appendChild(holder);
+ const opt={margin:[8,8,8,8],filename:'Sadupama_Industries_Quotation.pdf',image:{type:'jpeg',quality:.98},html2canvas:{scale:2,useCORS:true,backgroundColor:'#fff'},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},pagebreak:{mode:['css','legacy']}};
+ try{return await html2pdf().set(opt).from(el).outputPdf('blob')}finally{holder.remove()}
+}
+$('add').onclick=$('add2').onclick=()=>addRow();
+$('qno').addEventListener('input',recalc);$('date').addEventListener('input',recalc);
+$('save').onclick=()=>{localStorage.setItem('sadupamaQuotation',JSON.stringify(data()));$('status').textContent='Quotation එක මෙම දුරකථනයේ Save කර ඇත.'};
+$('new').onclick=()=>{if(confirm('අලුත් quotation එකක් ආරම්භ කරන්නද?')){loadData({qno:'',date:today,rows:[]});$('status').textContent='අලුත් quotation එකක් සූදානම්.'}};
+$('pdf').onclick=async()=>{try{$('status').textContent='PDF සකස් කරමින්...';const b=await pdfBlob();const u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='Sadupama_Industries_Quotation.pdf';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),5000);$('status').textContent='PDF සාර්ථකව සකස් කර ඇත.'}catch(e){console.error(e);alert('PDF සෑදීමට නොහැකි විය. Internet connection එක පරීක්ෂා කර නැවත උත්සාහ කරන්න.')}};
+$('share').onclick=async()=>{try{$('status').textContent='WhatsApp සඳහා PDF සකස් කරමින්...';const b=await pdfBlob();const f=new File([b],'Sadupama_Industries_Quotation.pdf',{type:'application/pdf'});if(navigator.share && (!navigator.canShare || navigator.canShare({files:[f]}))){await navigator.share({files:[f],title:'Sadupama Industries Quotation',text:'Sadupama Industries Rental Quotation'});$('status').textContent='Share window එක විවෘත විය. WhatsApp තෝරන්න.'}else{const u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=f.name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),5000);window.open('https://wa.me/?text='+encodeURIComponent('Sadupama Industries Rental Quotation PDF එක සකස් කර ඇත. PDF එක WhatsApp > File ලෙස යවන්න.'),'_blank');$('status').textContent='PDF බාගත කර ඇත. WhatsApp එකෙන් File ලෙස යවන්න.'}}catch(e){if(e.name==='AbortError')return;console.error(e);alert('WhatsApp PDF share කිරීමේදී දෝෂයක් විය. PDF බාගත කර WhatsApp එකෙන් File ලෙස යවන්න.')}};
+const saved=localStorage.getItem('sadupamaQuotation');if(saved){try{loadData(JSON.parse(saved))}catch(e){addRow()}}else{addRow({rate:75});addRow({rate:75});addRow({rate:25});addRow({rate:10});addRow({rate:100});addRow({rate:1000});}
+recalc();
+</script>
+</body>
+</html>
